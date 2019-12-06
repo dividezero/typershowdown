@@ -12,8 +12,8 @@ import messages from './messages';
 import SocketChat from '../../components/SocketChat';
 
 const sock = new SockJS('http://localhost:7070/websocket');
-
 const channelId = 'chat';
+
 sock.onopen = () => {
   console.log('open');
   // sock.send('test');
