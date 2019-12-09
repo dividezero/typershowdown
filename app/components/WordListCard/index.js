@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Pane, Table } from 'evergreen-ui';
+import { Table } from 'evergreen-ui';
 
 import './WordListCard.css';
+import FormattedCard from '../FormattedCard';
 
 // Declare a component that returns an HTML button with the given properties
 const WordListCard = ({ wordList }) => {
@@ -16,8 +17,8 @@ const WordListCard = ({ wordList }) => {
 
   const scroll = wordList.length ? { scrollToIndex: wordList.length - 1 } : {};
   return (
-    <Pane>
-      <Table>
+    <FormattedCard>
+      <Table width="100%">
         <Table.Head>
           <Table.TextHeaderCell>Word</Table.TextHeaderCell>
           <Table.TextHeaderCell textAlign="right">
@@ -44,7 +45,7 @@ const WordListCard = ({ wordList }) => {
         </Table.VirtualBody>
       </Table>
       <div ref={messagesEndRef} style={{ marginTop: 30 }} />
-    </Pane>
+    </FormattedCard>
   );
 };
 

@@ -3,16 +3,11 @@ import PropTypes from 'prop-types';
 import { Pane, Heading, TextInput } from 'evergreen-ui';
 
 import './WordTyperCard.css';
+import FormattedCard from '../FormattedCard';
 
 // Declare a component that returns an HTML button with the given properties
 const WordTyperCard = ({ currentWord, typingText, onChange }) => (
-  <Pane
-    display="flex"
-    flexDirection="column"
-    alignItems="center"
-    justifyContent="center"
-    margin={16}
-  >
+  <FormattedCard>
     <Pane marginBottom={16}>
       <Heading size={900}>{currentWord}</Heading>
     </Pane>
@@ -24,7 +19,7 @@ const WordTyperCard = ({ currentWord, typingText, onChange }) => (
         onChange={onChange}
       />
     </Pane>
-  </Pane>
+  </FormattedCard>
 );
 
 // Description - appears in the storybook item

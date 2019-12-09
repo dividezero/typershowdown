@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Pane, Heading } from 'evergreen-ui';
+import { Heading, Text } from 'evergreen-ui';
+import FormattedCard from '../FormattedCard';
 
 import './TimeCounterCard.css';
 
 // Declare a component that returns an HTML button with the given properties
 const TimeCounterCard = ({ countDownTIme }) => (
-  <Pane>
+  <FormattedCard width={200}>
+    <Text size={500}>Time left</Text>
     <Heading size={900}>{`${countDownTIme}s`}</Heading>
-  </Pane>
+  </FormattedCard>
 );
 
 // Description - appears in the storybook item
