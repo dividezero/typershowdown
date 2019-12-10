@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'evergreen-ui';
+import { getCardWidth } from '../../theme/layout';
 
 import './FormattedCard.css';
 
 // Declare a component that returns an HTML button with the given properties
 const FormattedCard = topProps => {
   const props = { ...topProps };
-  const { children } = topProps;
+  const { children, cellWidth, cellHeight } = topProps;
   delete props.children;
+  delete props.cellWidth;
+  delete props.cellHeight;
   return (
     <Card
       display="flex"
@@ -18,6 +21,9 @@ const FormattedCard = topProps => {
       margin={16}
       padding={24}
       elevation={2}
+      width={getCardWidth(cellWidth)}
+      height={getCardWidth(cellHeight)}
+      backgroundColor="white"
       {...props}
     >
       {children}
@@ -34,11 +40,15 @@ FormattedCard.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  cellWidth: PropTypes.number,
+  cellHeight: PropTypes.number,
 };
 
 // What properties the component should have when nothing is defined
 FormattedCard.defaultProps = {
   children: [],
+  cellWidth: 0,
+  cellHeight: 0,
 };
 
 export default FormattedCard;

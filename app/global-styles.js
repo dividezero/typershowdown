@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import bg from './images/128-191.jpg';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -9,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: url(${bg});
+    background-repeat: repeat;
   }
 
   body.fontLoaded {

@@ -42,4 +42,18 @@ storiesOf('WordListCard', module)
       ]}
     />
   ))
+  .add('Wordlist with a bunch more words', () => (
+    <WordListCard
+      wordList={[
+        {
+          word: 'hello',
+          typedTime1: 1234,
+        },
+        {
+          word: 'chair',
+          typedTime1: 2314,
+        },
+      ]}
+    />
+  ))
   .add('Wordlist empty', () => <WordListCard />);

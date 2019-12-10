@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { TextInput } from 'evergreen-ui';
 import SockJS from 'sockjs-client';
 import messages from './messages';
 import SocketChat from '../../components/SocketChat';
@@ -62,13 +63,11 @@ export default function HomePage() {
         </h1>
       </div>
       <div>
-        <input
+        <TextInput
           value={username}
           onChange={e => setUsername(e.target.value)}
           placeholder="Username"
-          style={{
-            padding: 8,
-          }}
+          padding={8}
         />
         <SocketChat onSubmit={submitMessage} messageHistory={messageHistory} />
       </div>

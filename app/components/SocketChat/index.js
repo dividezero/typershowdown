@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Pane, TextInput, Code } from 'evergreen-ui';
 
 import './SocketChat.css';
+import FormattedCard from '../FormattedCard';
 
 // Declare a component that returns an HTML button with the given properties
 const SocketChat = ({ onSubmit, messageHistory }) => {
@@ -15,36 +17,37 @@ const SocketChat = ({ onSubmit, messageHistory }) => {
   };
   const messagesEndRef = useRef(null);
   return (
-    <div>
-      <div
+    <FormattedCard>
+      <Pane
+        width="100%"
         style={{
           height: '50vh',
-          width: 500,
           padding: 8,
           overflowY: 'scroll',
-          backgroundColor: 'white',
         }}
       >
         {messageHistory &&
           messageHistory.map(({ id, sender, message }) => (
-            <p key={id}>{`${sender}: ${message}`}</p>
+            <div key={id}>
+              <Code
+                appearance="minimal"
+                color="cornflowerblue"
+              >{`${sender}: `}</Code>
+              <Code appearance="minimal">{message}</Code>
+            </div>
           ))}
         <div ref={messagesEndRef} style={{ marginTop: 50 }} />
-      </div>
+      </Pane>
 
-      <input
+      <TextInput
+        size={600}
         value={text}
-        placeholder="type a message..."
+        placeholder="Type a message..."
+        onChange={event => setText(event.target.value)}
+        width="100%"
         onKeyDown={onSubmitMessage}
-        onChange={event => {
-          setText(event.target.value);
-        }}
-        style={{
-          padding: 8,
-          width: 500,
-        }}
       />
-    </div>
+    </FormattedCard>
   );
 };
 

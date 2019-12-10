@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Heading, Text } from 'evergreen-ui';
+import { Heading } from 'evergreen-ui';
 import FormattedCard from '../FormattedCard';
 
 import './TimeCounterCard.css';
 
 // Declare a component that returns an HTML button with the given properties
-const TimeCounterCard = ({ countDownTIme }) => (
-  <FormattedCard width={200}>
-    <Text size={500}>Time left</Text>
-    <Heading size={900}>{`${countDownTIme}s`}</Heading>
+const TimeCounterCard = ({ title, countDownTIme }) => (
+  <FormattedCard cellWidth={2} cellHeight={2}>
+    <Heading size={700} padding={8}>
+      {title}
+    </Heading>
+    <Heading
+      size={900}
+      padding={8}
+      fontSize={56}
+    >{`${countDownTIme}s`}</Heading>
   </FormattedCard>
 );
 
@@ -18,11 +24,13 @@ TimeCounterCard.description = `Time countdown in seconds`;
 
 // This allows for the definition of rules that each prop type has to follow in order to be used properly
 TimeCounterCard.propTypes = {
+  title: PropTypes.string,
   countDownTIme: PropTypes.number,
 };
 
 // What properties the component should have when nothing is defined
 TimeCounterCard.defaultProps = {
+  title: '',
   countDownTIme: 0,
 };
 

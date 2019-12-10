@@ -1,26 +1,43 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Pane, Heading, TextInput } from 'evergreen-ui';
+import { Pane, Heading } from 'evergreen-ui';
 
 import './WordTyperCard.css';
 import FormattedCard from '../FormattedCard';
 
 // Declare a component that returns an HTML button with the given properties
-const WordTyperCard = ({ currentWord, typingText, onChange }) => (
-  <FormattedCard>
-    <Pane marginBottom={16}>
-      <Heading size={900}>{currentWord}</Heading>
-    </Pane>
-    <Pane>
-      <TextInput
-        size={600}
-        value={typingText}
-        placeholder={currentWord}
-        onChange={onChange}
-      />
-    </Pane>
-  </FormattedCard>
-);
+const WordTyperCard = ({ currentWord, typingText, disabled, onChange }) => {
+  const textInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!disabled) {
+      textInputRef.current.focus();
+    }
+  }, [disabled]);
+  console.log('disabled', disabled);
+  return (
+    <FormattedCard cellWidth={4} cellHeight={2} paddingX={16}>
+      <Pane paddingBottom={24}>
+        <Heading size={900}>{currentWord}</Heading>
+      </Pane>
+      <Pane width="100%">
+        <input
+          type="text"
+          ref={textInputRef}
+          value={typingText}
+          placeholder={currentWord}
+          onChange={e => onChange(e.target.value)}
+          style={{
+            fontSize: 32,
+            width: '100%',
+            padding: 24,
+            textAlign: 'center',
+          }}
+        />
+      </Pane>
+    </FormattedCard>
+  );
+};
 
 // Description - appears in the storybook item
 WordTyperCard.description = `The arena where the user types`;
@@ -29,6 +46,7 @@ WordTyperCard.description = `The arena where the user types`;
 WordTyperCard.propTypes = {
   currentWord: PropTypes.string,
   typingText: PropTypes.string,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
@@ -36,6 +54,7 @@ WordTyperCard.propTypes = {
 WordTyperCard.defaultProps = {
   currentWord: '',
   typingText: '',
+  disabled: false,
   onChange: () => {},
 };
 
