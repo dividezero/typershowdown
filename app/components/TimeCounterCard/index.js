@@ -7,7 +7,7 @@ import './TimeCounterCard.css';
 
 // Declare a component that returns an HTML button with the given properties
 const TimeCounterCard = ({ title, countDownTIme }) => (
-  <FormattedCard cellWidth={2} cellHeight={2}>
+  <FormattedCard cellWidth={3} cellHeight={2}>
     <Heading size={700} padding={8}>
       {title}
     </Heading>

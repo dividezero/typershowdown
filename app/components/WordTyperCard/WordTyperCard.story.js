@@ -17,4 +17,15 @@ storiesOf('WordTyperCard', module)
         onChange={({ target: { value } }) => setTyping(value)}
       />
     );
+  })
+  .add('WordTyper disabled', () => {
+    const [typing, setTyping] = useState('');
+    return (
+      <WordTyperCard
+        currentWord="Duck"
+        typingText={typing}
+        disabled
+        onChange={({ target: { value } }) => setTyping(value)}
+      />
+    );
   });

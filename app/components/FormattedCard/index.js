@@ -42,6 +42,7 @@ FormattedCard.propTypes = {
   ]),
   cellWidth: PropTypes.number,
   cellHeight: PropTypes.number,
+  justifyItems: PropTypes.string,
 };
 
 // What properties the component should have when nothing is defined
@@ -49,6 +50,7 @@ FormattedCard.defaultProps = {
   children: [],
   cellWidth: 0,
   cellHeight: 0,
+  justifyItems: undefined,
 };
 
 export default FormattedCard;
