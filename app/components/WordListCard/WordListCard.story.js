@@ -35,7 +35,11 @@ const wordList = [
   },
 ];
 
-const players = [{ username: 'player1' }, { username: 'player2' }, { username: 'player3' }];
+const players = [
+  { username: 'player1' },
+  { username: 'player2' },
+  { username: 'player3' },
+];
 
 storiesOf('WordListCard', module)
   .addDecorator((story, context) =>

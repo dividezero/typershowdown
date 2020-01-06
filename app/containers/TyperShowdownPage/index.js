@@ -7,17 +7,20 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Pane, Dialog, Text } from 'evergreen-ui';
+import { Button, Heading, Pane } from 'evergreen-ui';
 import TimeCounterCard from '../../components/TimeCounterCard';
 import WordListCard from '../../components/WordListCard';
 import WordTyperCard from '../../components/WordTyperCard';
 import ResultsDialog from '../../components/ResultsDialog';
 import ReadyButtonCard from '../../components/ReadyButtonCard';
-import UsernameDialog from '../../components/UsernameDialog';
 import { getRandomWords } from '../../api/games';
-import waitingImg from '../../images/girl-with-clock.gif';
+// import waitingImg from '../../images/girl-with-clock.gif';
+import config from '../../config.json';
 import theme from '../../theme';
 import OpponentCard from '../../components/OpponentCard';
+import { getCardWidth } from '../../theme/layout';
+
+const randomWordCount = 20;
 
 export default function TyperShowdownPage({ sock, channelId, username, host }) {
   const [showResults, setShowResults] = useState(false);
@@ -46,6 +49,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       time,
       readyState,
       message,
+      typing,
       username: msgUsername,
     } = JSON.parse(data);
     console.log('action', action);
@@ -71,6 +75,12 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       case 'TYPER_HOST_UPDATE':
         setPlayers(newPlayers);
         break;
+      case 'TYPER_TYPE':
+        // eslint-disable-next-line no-case-declarations
+        const playersUpdate = { ...players };
+        playersUpdate[player].typing = typing;
+        setPlayers(playersUpdate);
+        break;
       case 'TYPER_SUBMIT':
         setWordList(
           wordList.map(entry => {
@@ -87,6 +97,18 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
             return entry;
           }),
         );
+        if (host) {
+          const hostUpdatePlayers = {
+            ...players,
+          };
+          hostUpdatePlayers[player].progress =
+            players[player].progress + 100 / randomWordCount;
+          console.log(
+            'hostUpdatePlayers[player].progress',
+            hostUpdatePlayers[player].progress,
+          );
+          sendHostUpdate(hostUpdatePlayers);
+        }
         break;
       case 'TYPER_PLAYER_PINGED':
         if (username !== player) {
@@ -133,6 +155,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
         setShowResults(true);
         setGameOngoing(false);
 
+        sock.close();
         // eslint-disable-next-line no-param-reassign
         sock.onclose = () => {
           console.log('close');
@@ -172,6 +195,16 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
     wordList[currentWordIndex] && wordList[currentWordIndex].word;
 
   const onTyping = value => {
+    if (players.length <= config.showPlayerTypingMaxPlayers) {
+      sock.send(
+        JSON.stringify({
+          action: 'TYPER_TYPE',
+          player: username,
+          typing: value,
+          channelId,
+        }),
+      );
+    }
     if (value === getCurrentWord()) {
       setTypingText('');
       setCurrentWordIndex(currentWordIndex + 1);
@@ -192,18 +225,23 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
 
   const startGame = () => {
     setShowResults(false);
-    getRandomWords(20).then(response => {
-      response.text().then(words => {
-        console.log('words', words);
-        sock.send(
-          JSON.stringify({
-            action: 'TYPER_COUNTDOWN',
-            words: JSON.parse(words),
-            channelId,
-          }),
-        );
+    getRandomWords(randomWordCount)
+      .then(response => {
+        response.text().then(words => {
+          console.log('words', words);
+          sock.send(
+            JSON.stringify({
+              action: 'TYPER_COUNTDOWN',
+              words: JSON.parse(words),
+              channelId,
+            }),
+          );
+        });
+      })
+      .catch(e => {
+        alert('word query issue. Please update API key');
+        console.error(e);
       });
-    });
   };
 
   const sendPlayerJoin = () => {
@@ -218,6 +256,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
     }
   };
 
+  /*
   const sendPlayerPing = () => {
     if (username) {
       sock.send(
@@ -229,6 +268,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       );
     }
   };
+   */
 
   const sendPlayerReadyState = readyState => {
     sock.send(
@@ -261,8 +301,9 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
   const allPlayersAreReady = () => {
     const playerNames = Object.keys(players);
     return (
+      playerNames.length > 1 &&
       playerNames.filter(name => players[name].readyState).length ===
-      playerNames.length
+        playerNames.length
     );
   };
 
@@ -329,6 +370,19 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
           username={username}
           onRestart={restartGame}
         />
+      )}
+      {showResults && (
+        <Button
+          appearance="primary"
+          height={getCardWidth(1)}
+          width={getCardWidth(6)}
+          marginLeft={16}
+          onClick={restartGame}
+        >
+          <Heading size={900} color="white" textAlign="center" width="100%">
+            Back to Lobby
+          </Heading>
+        </Button>
       )}
     </div>
   );

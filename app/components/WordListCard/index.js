@@ -7,12 +7,6 @@ import FormattedCard from '../FormattedCard';
 
 // Declare a component that returns an HTML button with the given properties
 const WordListCard = ({ wordList, scrollToIndex, players }) => {
-  const getShade = (time1, time2) => {
-    if (time1 < time2) return 'success';
-    if (time1 > time2) return 'danger';
-    return 'none';
-  };
-
   const scroll = wordList.length
     ? { scrollToIndex: scrollToIndex < 5 ? 0 : scrollToIndex - 5 }
     : {};
@@ -23,7 +17,7 @@ const WordListCard = ({ wordList, scrollToIndex, players }) => {
           <Table.TextHeaderCell />
           {players.map(name => (
             <Table.TextHeaderCell key={name} textAlign="center">
-              <Heading size={700}>{name}</Heading>
+              <Heading size={600}>{name}</Heading>
             </Table.TextHeaderCell>
           ))}
         </Table.Head>

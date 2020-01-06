@@ -7,19 +7,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { Pane } from 'evergreen-ui';
-import PropTypes from 'prop-types';
 import SockJS from 'sockjs-client';
 import GameListCard from '../../components/GameListCard';
 import TyperShowdownPage from '../TyperShowdownPage/Loadable';
 
+import config, { apiUrl } from '../../config.json';
 import { getGameSessions } from '../../api/games';
 import UsernameDialog from '../../components/UsernameDialog';
 import theme from '../../theme';
 import CreateGameDialog from '../../components/CreateGameDialog';
 
 const gameName = 'TYPER_SHOWDOWN';
-
-const sock = new SockJS('http://10.13.16.201:7070/websocket');
+const sock = new SockJS(`${apiUrl}/websocket`);
 
 export default function TyperShowdownLobbyPage() {
   const [gameList, setGameList] = useState([]);
@@ -72,24 +71,26 @@ export default function TyperShowdownLobbyPage() {
       )}
       <CreateGameDialog
         isShown={showCreateGameDialog}
-        maxPlayersOption={4}
+        maxPlayersOption={config.maxPlayers}
         onConfirm={(tempUsername, maxPlayers) => {
-          setShowCreateGameDialog(false);
-          const tempChannelId = `TYPER_SHOWDOWN_${tempUsername}`;
-          sock.send(
-            JSON.stringify({
-              action: 'CHANNEL_CREATE',
-              channelId: tempChannelId,
-              channelOpts: {
-                game: 'TYPER_SHOWDOWN',
-                maxPlayers,
-              },
-              username: tempUsername,
-            }),
-          );
-          setHost(true);
-          setUsername(tempUsername);
-          setChannelId(tempChannelId);
+          if (`${tempUsername}`.trim()) {
+            setShowCreateGameDialog(false);
+            const tempChannelId = `TYPER_SHOWDOWN_${tempUsername}`;
+            sock.send(
+              JSON.stringify({
+                action: 'CHANNEL_CREATE',
+                channelId: tempChannelId,
+                channelOpts: {
+                  game: 'TYPER_SHOWDOWN',
+                  maxPlayers,
+                },
+                username: tempUsername,
+              }),
+            );
+            setHost(true);
+            setUsername(tempUsername);
+            setChannelId(tempChannelId);
+          }
         }}
         onCancel={() => setShowCreateGameDialog(false)}
       />
@@ -116,11 +117,7 @@ export default function TyperShowdownLobbyPage() {
 TyperShowdownLobbyPage.description = `Shows list of games`;
 
 // This allows for the definition of rules that each prop type has to follow in order to be used properly
-TyperShowdownLobbyPage.propTypes = {
-  onGameSelect: PropTypes.func,
-};
+TyperShowdownLobbyPage.propTypes = {};
 
 // What properties the component should have when nothing is defined
-TyperShowdownLobbyPage.defaultProps = {
-  onGameSelect: () => {},
-};
+TyperShowdownLobbyPage.defaultProps = {};

@@ -17,7 +17,9 @@ const WordTyperCard = ({ currentWord, typingText, disabled, onChange }) => {
   return (
     <FormattedCard cellWidth={4} cellHeight={2} paddingX={16}>
       <Pane paddingBottom={24}>
-        <Heading size={900}>{currentWord}</Heading>
+        <Heading size={900} className="unselectable">
+          {currentWord}
+        </Heading>
       </Pane>
       <Pane width="100%">
         <input

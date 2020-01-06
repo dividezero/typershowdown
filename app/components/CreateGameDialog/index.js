@@ -5,7 +5,12 @@ import { Dialog, Text, TextInputField, SegmentedControl } from 'evergreen-ui';
 import './CreateGameDialog.css';
 
 // Declare a component that returns an HTML button with the given properties
-const CreateGameDialog = ({ isShown, maxPlayersOption, onConfirm, onCancel }) => {
+const CreateGameDialog = ({
+  isShown,
+  maxPlayersOption,
+  onConfirm,
+  onCancel,
+}) => {
   const [username, setUsername] = useState('');
   const [maxPlayers, setMaxPlayers] = useState(maxPlayersOption);
 

@@ -40,7 +40,7 @@ const OpponentCard = ({ name, typing, progress, readyState, gameOngoing }) => (
       </Pane>
     ) : (
       <Heading size={800} flexGrow={2} textAlign="center">
-        {readyState? 'Ready': 'Not Ready'}
+        {readyState ? 'Ready' : 'Not Ready'}
       </Heading>
     )}
   </FormattedCard>
