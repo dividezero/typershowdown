@@ -17,7 +17,7 @@ npm install
 ### Development
 Run development server
 ```bash
-npm run dev
+npm start
 ```
 Run storybook server
 ```bash
