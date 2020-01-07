@@ -7,24 +7,38 @@ import WordListCard from './index';
 const wordList = [
   {
     word: 'hello',
-    typedTime1: 1234,
-    typedTime2: 2314,
+    times: {
+      player1: 231,
+      player2: 3123,
+    },
   },
   {
     word: 'chair',
-    typedTime1: 2314,
-    typedTime2: 1234,
+    times: {
+      player1: 231,
+      player2: 3123,
+    },
   },
   {
     word: 'amphibious',
-    typedTime1: 1234,
-    typedTime2: 2314,
+    times: {
+      player1: 231,
+      player2: 3123,
+    },
   },
   {
     word: 'catering',
-    typedTime1: 2314,
-    typedTime2: 2134,
+    times: {
+      player1: 3123,
+      player2: 222,
+    },
   },
+];
+
+const players = [
+  { username: 'player1' },
+  { username: 'player2' },
+  { username: 'player3' },
 ];
 
 storiesOf('WordListCard', module)
@@ -32,7 +46,7 @@ storiesOf('WordListCard', module)
     withInfo(WordListCard.description)(story)(context),
   )
   .add('Wordlist with a bunch of words', () => (
-    <WordListCard wordList={wordList} />
+    <WordListCard wordList={wordList} players={players} />
   ))
   .add('Wordlist with a bunch more words', () => (
     <WordListCard
@@ -40,20 +54,7 @@ storiesOf('WordListCard', module)
         ...wordList,
         ...wordList.map(word => ({ ...word, word: `${word.word}1` })),
       ]}
-    />
-  ))
-  .add('Wordlist with a bunch more words', () => (
-    <WordListCard
-      wordList={[
-        {
-          word: 'hello',
-          typedTime1: 1234,
-        },
-        {
-          word: 'chair',
-          typedTime1: 2314,
-        },
-      ]}
+      players={players}
     />
   ))
   .add('Wordlist empty', () => <WordListCard />);

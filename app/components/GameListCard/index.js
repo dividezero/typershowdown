@@ -13,8 +13,6 @@ const GameListCard = ({ gameList, onSelect, onCreate, onRefresh }) => {
     if (numPlayers >= 2) return 'danger';
     return 'none';
   };
-
-  console.log('gameList', gameList);
   const scroll = gameList.length ? { scrollToIndex: gameList.length - 1 } : {};
   return (
     <FormattedCard>
@@ -27,23 +25,26 @@ const GameListCard = ({ gameList, onSelect, onCreate, onRefresh }) => {
       </Pane>
       <Table width="100%">
         <Table.Head>
+          <Table.TextHeaderCell>ID</Table.TextHeaderCell>
           <Table.TextHeaderCell>Host</Table.TextHeaderCell>
-          <Table.TextHeaderCell textAlign="right">
-            No of Players
-          </Table.TextHeaderCell>
+          <Table.TextHeaderCell textAlign="right">Players</Table.TextHeaderCell>
         </Table.Head>
         <Table.VirtualBody height={240} {...scroll}>
           {gameList &&
-            gameList.map(({ channelId, players, numPlayers }) => (
+            gameList.map(({ channelId, players, host, maxPlayers }) => (
               <Table.Row
                 key={channelId}
                 isSelectable
-                onSelect={onSelect}
-                intent={getShade(numPlayers)}
+                onSelect={() => {
+                  onSelect(channelId);
+                }}
+                intent={getShade(players.length)}
               >
                 <Table.TextCell>{channelId}</Table.TextCell>
-                <Table.TextCell>{players}</Table.TextCell>
-                <Table.TextCell textAlign="right">{`${numPlayers}/2`}</Table.TextCell>
+                <Table.TextCell>{host}</Table.TextCell>
+                <Table.TextCell textAlign="right">{`${
+                  players.length
+                }/${maxPlayers}`}</Table.TextCell>
               </Table.Row>
             ))}
         </Table.VirtualBody>
@@ -62,7 +63,8 @@ GameListCard.propTypes = {
     PropTypes.shape({
       channelId: PropTypes.string,
       players: PropTypes.arrayOf(PropTypes.string),
-      numPlayers: PropTypes.number,
+      host: PropTypes.string,
+      maxPlayers: PropTypes.number,
     }),
   ),
   onCreate: PropTypes.func,

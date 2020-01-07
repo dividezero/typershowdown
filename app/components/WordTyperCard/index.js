@@ -14,23 +14,27 @@ const WordTyperCard = ({ currentWord, typingText, disabled, onChange }) => {
       textInputRef.current.focus();
     }
   }, [disabled]);
-  console.log('disabled', disabled);
   return (
     <FormattedCard cellWidth={4} cellHeight={2} paddingX={16}>
       <Pane paddingBottom={24}>
-        <Heading size={900}>{currentWord}</Heading>
+        <Heading size={900} className="unselectable">
+          {currentWord}
+        </Heading>
       </Pane>
       <Pane width="100%">
         <input
           type="text"
           ref={textInputRef}
           value={typingText}
+          disabled={disabled}
           placeholder={currentWord}
           onChange={e => onChange(e.target.value)}
           style={{
             fontSize: 32,
+            outline: 'none',
             width: '100%',
             padding: 24,
+            boxSizing: 'border-box',
             textAlign: 'center',
           }}
         />

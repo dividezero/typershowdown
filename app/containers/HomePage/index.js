@@ -18,7 +18,7 @@ const channelId = 'chat';
 sock.onopen = () => {
   console.log('open');
   // sock.send('test');
-  sock.send(JSON.stringify({ action: 'joinChannel', channelId }));
+  sock.send(JSON.stringify({ action: 'CHANNEL_JOIN', channelId }));
 };
 
 sock.onclose = () => {
