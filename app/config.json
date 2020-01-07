@@ -1,5 +1,5 @@
 {
-  "apiUrl": "http://echochamber.ap-southeast-1.elasticbeanstalk.com",
+  "apiUrl": "https://api.typershowdown.com",
   "showPlayerTypingMaxPlayers": 3,
   "maxPlayers": 6
 }
