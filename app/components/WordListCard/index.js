@@ -12,7 +12,7 @@ const WordListCard = ({ wordList, scrollToIndex, players }) => {
     : {};
   return (
     <FormattedCard cellWidth={6} cellHeight={4}>
-      <Table width="100%" height="100%">
+      <Table width="100%" height="100%" paddingBottom={16}>
         <Table.Head background="none">
           <Table.TextHeaderCell />
           {players.map(name => (

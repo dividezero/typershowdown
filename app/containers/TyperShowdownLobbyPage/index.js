@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Pane } from 'evergreen-ui';
+import { Button, IconButton, Pane } from 'evergreen-ui';
 import SockJS from 'sockjs-client';
 import GameListCard from '../../components/GameListCard';
 import TyperShowdownPage from '../TyperShowdownPage/Loadable';
@@ -18,6 +18,7 @@ import theme from '../../theme';
 import CreateGameDialog from '../../components/CreateGameDialog';
 
 const gameName = 'TYPER_SHOWDOWN';
+const setupStatus = 'GAME_SETUP';
 const sock = new SockJS(`${apiUrl}/websocket`);
 
 export default function TyperShowdownLobbyPage() {
@@ -28,7 +29,7 @@ export default function TyperShowdownLobbyPage() {
   const [showCreateGameDialog, setShowCreateGameDialog] = useState(false);
 
   const refreshSessions = () => {
-    getGameSessions(gameName).then(response => {
+    getGameSessions(gameName, setupStatus).then(response => {
       response.text().then(body => {
         const { channels } = JSON.parse(body);
         setGameList(channels);
@@ -49,7 +50,7 @@ export default function TyperShowdownLobbyPage() {
   };
 
   return (
-    <Pane backgroundColor={theme.backgroundColor} height="100vh">
+    <Pane>
       {username && channelId ? (
         <TyperShowdownPage
           channelId={channelId}
@@ -58,7 +59,19 @@ export default function TyperShowdownLobbyPage() {
           host={host}
         />
       ) : (
-        <Pane padding={20}>
+        <Pane padding={16}>
+          <Pane display="flex" width="100%" padding={8}>
+            <Button
+              appearance="primary"
+              onClick={() => {
+                setShowCreateGameDialog(true);
+              }}
+            >
+              Create
+            </Button>
+            <span style={{ flexGrow: 1 }} />
+            <IconButton icon="refresh" onClick={refreshSessions} />
+          </Pane>
           <GameListCard
             gameList={gameList}
             onCreate={() => {
@@ -83,6 +96,7 @@ export default function TyperShowdownLobbyPage() {
                 channelOpts: {
                   game: 'TYPER_SHOWDOWN',
                   maxPlayers,
+                  status: setupStatus,
                 },
                 username: tempUsername,
               }),

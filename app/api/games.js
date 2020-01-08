@@ -1,7 +1,7 @@
 import { apiUrl } from '../config.json';
 
-export const getGameSessions = async gameName =>
-  fetch(`${apiUrl}/channels/${gameName}`, {
+export const getGameSessions = async (gameName, status = '') =>
+  fetch(`${apiUrl}/channels/${gameName}/${status}`, {
     method: 'GET',
   });
 

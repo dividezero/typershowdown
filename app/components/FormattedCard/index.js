@@ -18,8 +18,8 @@ const FormattedCard = topProps => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      margin={16}
-      padding={24}
+      margin={8}
+      padding={16}
       elevation={2}
       width={getCardWidth(cellWidth)}
       height={getCardWidth(cellHeight)}
