@@ -18,6 +18,7 @@ import theme from '../../theme';
 import CreateGameDialog from '../../components/CreateGameDialog';
 
 const gameName = 'TYPER_SHOWDOWN';
+const setupStatus = 'GAME_SETUP';
 const sock = new SockJS(`${apiUrl}/websocket`);
 
 export default function TyperShowdownLobbyPage() {
@@ -28,7 +29,7 @@ export default function TyperShowdownLobbyPage() {
   const [showCreateGameDialog, setShowCreateGameDialog] = useState(false);
 
   const refreshSessions = () => {
-    getGameSessions(gameName).then(response => {
+    getGameSessions(gameName, setupStatus).then(response => {
       response.text().then(body => {
         const { channels } = JSON.parse(body);
         setGameList(channels);
@@ -83,6 +84,7 @@ export default function TyperShowdownLobbyPage() {
                 channelOpts: {
                   game: 'TYPER_SHOWDOWN',
                   maxPlayers,
+                  status: setupStatus,
                 },
                 username: tempUsername,
               }),

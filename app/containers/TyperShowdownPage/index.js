@@ -57,6 +57,9 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       case 'TYPER_COUNTDOWN':
         console.log('coundown start');
         if (!gameOngoing) {
+          if (host) {
+            setChannelStatus('GAME_ONGOING');
+          }
           setPhase('Ready up!');
           setShowReadyButton(false);
           setWordList(words.map(word => ({ word, times: {} })));
@@ -195,7 +198,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
     wordList[currentWordIndex] && wordList[currentWordIndex].word;
 
   const onTyping = value => {
-    if (players.length <= config.showPlayerTypingMaxPlayers) {
+    if (Object.keys(players).length <= config.showPlayerTypingMaxPlayers) {
       sock.send(
         JSON.stringify({
           action: 'TYPER_TYPE',
@@ -205,7 +208,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
         }),
       );
     }
-    if (value === getCurrentWord()) {
+    if (value.toLowerCase() === getCurrentWord()) {
       setTypingText('');
       setCurrentWordIndex(currentWordIndex + 1);
       sock.send(
@@ -222,6 +225,15 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       setTypingText(value);
     }
   };
+
+  const setChannelStatus = status =>
+    sock.send(
+      JSON.stringify({
+        action: 'CHANNEL_STATUS',
+        status,
+        channelId,
+      }),
+    );
 
   const startGame = () => {
     setShowResults(false);
