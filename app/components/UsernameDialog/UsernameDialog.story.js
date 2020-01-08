@@ -9,11 +9,8 @@ storiesOf('UsernameDialog', module)
     withInfo(UsernameDialog.description)(story)(context),
   )
   .add('UsernameDialog default', () => (
-    <UsernameDialog
-      isShown
-      timeTaken={400}
-      timeTaken2={300}
-      wordsCompleted={20}
-      wordsCompleted2={15}
-    />
+    <UsernameDialog isShown onConfirm={() => {}} />
+  ))
+  .add('UsernameDialog no preview', () => (
+    <UsernameDialog isShown showPreview={false} />
   ));

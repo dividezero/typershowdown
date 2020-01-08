@@ -16,13 +16,18 @@ import ReadyButtonCard from '../../components/ReadyButtonCard';
 import { getRandomWords } from '../../api/games';
 // import waitingImg from '../../images/girl-with-clock.gif';
 import config from '../../config.json';
-import theme from '../../theme';
 import OpponentCard from '../../components/OpponentCard';
 import { getCardWidth } from '../../theme/layout';
-
+import './TyperShowdownPage.css';
 const randomWordCount = 20;
 
-export default function TyperShowdownPage({ sock, channelId, username, host }) {
+export default function TyperShowdownPage({
+  sock,
+  channelId,
+  username,
+  host,
+  onQuit,
+}) {
   const [showResults, setShowResults] = useState(false);
   const [phase, setPhase] = useState('Get ready');
   const [showReadyButton, setShowReadyButton] = useState(true);
@@ -57,6 +62,9 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       case 'TYPER_COUNTDOWN':
         console.log('coundown start');
         if (!gameOngoing) {
+          if (host) {
+            setChannelStatus('GAME_ONGOING');
+          }
           setPhase('Ready up!');
           setShowReadyButton(false);
           setWordList(words.map(word => ({ word, times: {} })));
@@ -195,7 +203,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
     wordList[currentWordIndex] && wordList[currentWordIndex].word;
 
   const onTyping = value => {
-    if (players.length <= config.showPlayerTypingMaxPlayers) {
+    if (Object.keys(players).length <= config.showPlayerTypingMaxPlayers) {
       sock.send(
         JSON.stringify({
           action: 'TYPER_TYPE',
@@ -205,7 +213,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
         }),
       );
     }
-    if (value === getCurrentWord()) {
+    if (value.toLowerCase() === getCurrentWord()) {
       setTypingText('');
       setCurrentWordIndex(currentWordIndex + 1);
       sock.send(
@@ -222,6 +230,15 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       setTypingText(value);
     }
   };
+
+  const setChannelStatus = status =>
+    sock.send(
+      JSON.stringify({
+        action: 'CHANNEL_STATUS',
+        status,
+        channelId,
+      }),
+    );
 
   const startGame = () => {
     setShowResults(false);
@@ -295,7 +312,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
   };
 
   const restartGame = () => {
-    window.location.reload();
+    onQuit();
   };
 
   const allPlayersAreReady = () => {
@@ -312,27 +329,27 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       <Pane
         display="flex"
         flexDirection="column"
-        jusifyItems="center"
-        backgroundColor={theme.backgroundColor}
+        justifyItems="center"
         alignItems="center"
-        height="100vh"
       >
-        <Pane display="flex" flexDirection="row">
-          <Pane display="flex" flexDirection="column">
+        <Pane className="container">
+          <Pane className="sidebar">
             <TimeCounterCard title={phase} countDownTIme={timeLeft} />
-            {Object.keys(players).map(uname => {
-              const { typing, progress, readyState } = players[uname];
-              return (
-                <OpponentCard
-                  key={uname}
-                  name={uname}
-                  typing={typing}
-                  progress={progress}
-                  readyState={readyState}
-                  gameOngoing={gameOngoing}
-                />
-              );
-            })}
+            <Pane className="opponentList">
+              {Object.keys(players).map(uname => {
+                const { typing, progress, readyState } = players[uname];
+                return (
+                  <OpponentCard
+                    key={uname}
+                    name={uname}
+                    typing={typing}
+                    progress={progress}
+                    readyState={readyState}
+                    gameOngoing={gameOngoing}
+                  />
+                );
+              })}
+            </Pane>
           </Pane>
           <Pane display="flex" flexDirection="column">
             <WordListCard
@@ -350,6 +367,24 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
                   sendPlayerReadyState(!readyState);
                 }}
               />
+            )}
+            {showResults && (
+              <Button
+                appearance="primary"
+                height={getCardWidth(1)}
+                width={getCardWidth(6)}
+                marginLeft={8}
+                onClick={restartGame}
+              >
+                <Heading
+                  size={900}
+                  color="white"
+                  textAlign="center"
+                  width="100%"
+                >
+                  Back to Lobby
+                </Heading>
+              </Button>
             )}
             {gameOngoing && (
               <WordTyperCard
@@ -371,19 +406,6 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
           onRestart={restartGame}
         />
       )}
-      {showResults && (
-        <Button
-          appearance="primary"
-          height={getCardWidth(1)}
-          width={getCardWidth(6)}
-          marginLeft={16}
-          onClick={restartGame}
-        >
-          <Heading size={900} color="white" textAlign="center" width="100%">
-            Back to Lobby
-          </Heading>
-        </Button>
-      )}
     </div>
   );
 }
@@ -397,7 +419,10 @@ TyperShowdownPage.propTypes = {
   sock: PropTypes.shape({}).isRequired,
   channelId: PropTypes.string.isRequired,
   host: PropTypes.bool.isRequired,
+  onQuit: PropTypes.func,
 };
 
 // What properties the component should have when nothing is defined
-TyperShowdownPage.defaultProps = {};
+TyperShowdownPage.defaultProps = {
+  onQuit: () => {},
+};

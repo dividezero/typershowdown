@@ -1,0 +1,25 @@
+.container {
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: row;
+}
+
+.opponentList {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 950px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+  }
+}

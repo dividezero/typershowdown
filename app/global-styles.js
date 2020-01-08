@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import bg from './images/128-191.jpg';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -10,8 +9,6 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-image: url(${bg});
-    background-repeat: repeat;
   }
 
   body.fontLoaded {
@@ -19,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #app {
-    background-color: #fafafa;
+    background-image: linear-gradient(100deg, #29323c 0%, #485563 100%);
     min-height: 100%;
     min-width: 100%;
   }

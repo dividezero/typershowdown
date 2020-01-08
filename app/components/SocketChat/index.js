@@ -21,7 +21,7 @@ const SocketChat = ({ onSubmit, messageHistory }) => {
       <Pane
         width="100%"
         style={{
-          height: '50vh',
+          height: 400,
           padding: 8,
           overflowY: 'scroll',
         }}
@@ -46,6 +46,9 @@ const SocketChat = ({ onSubmit, messageHistory }) => {
         onChange={event => setText(event.target.value)}
         width="100%"
         onKeyDown={onSubmitMessage}
+        style={{
+          outline: 'none',
+        }}
       />
     </FormattedCard>
   );
