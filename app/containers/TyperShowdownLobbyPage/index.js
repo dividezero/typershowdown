@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Pane } from 'evergreen-ui';
+import { Button, IconButton, Pane } from 'evergreen-ui';
 import SockJS from 'sockjs-client';
 import GameListCard from '../../components/GameListCard';
 import TyperShowdownPage from '../TyperShowdownPage/Loadable';
@@ -50,7 +50,7 @@ export default function TyperShowdownLobbyPage() {
   };
 
   return (
-    <Pane backgroundColor={theme.backgroundColor} height="100vh">
+    <Pane>
       {username && channelId ? (
         <TyperShowdownPage
           channelId={channelId}
@@ -59,7 +59,19 @@ export default function TyperShowdownLobbyPage() {
           host={host}
         />
       ) : (
-        <Pane padding={20}>
+        <Pane padding={16}>
+          <Pane display="flex" width="100%" padding={8}>
+            <Button
+              appearance="primary"
+              onClick={() => {
+                setShowCreateGameDialog(true);
+              }}
+            >
+              Create
+            </Button>
+            <span style={{ flexGrow: 1 }} />
+            <IconButton icon="refresh" onClick={refreshSessions} />
+          </Pane>
           <GameListCard
             gameList={gameList}
             onCreate={() => {

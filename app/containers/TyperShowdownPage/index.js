@@ -16,10 +16,9 @@ import ReadyButtonCard from '../../components/ReadyButtonCard';
 import { getRandomWords } from '../../api/games';
 // import waitingImg from '../../images/girl-with-clock.gif';
 import config from '../../config.json';
-import theme from '../../theme';
 import OpponentCard from '../../components/OpponentCard';
 import { getCardWidth } from '../../theme/layout';
-
+import './TyperShowdownPage.css';
 const randomWordCount = 20;
 
 export default function TyperShowdownPage({ sock, channelId, username, host }) {
@@ -325,26 +324,26 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
         display="flex"
         flexDirection="column"
         jusifyItems="center"
-        backgroundColor={theme.backgroundColor}
         alignItems="center"
-        height="100vh"
       >
-        <Pane display="flex" flexDirection="row">
-          <Pane display="flex" flexDirection="column">
+        <Pane className="container">
+          <Pane className="sidebar">
             <TimeCounterCard title={phase} countDownTIme={timeLeft} />
-            {Object.keys(players).map(uname => {
-              const { typing, progress, readyState } = players[uname];
-              return (
-                <OpponentCard
-                  key={uname}
-                  name={uname}
-                  typing={typing}
-                  progress={progress}
-                  readyState={readyState}
-                  gameOngoing={gameOngoing}
-                />
-              );
-            })}
+            <Pane className="opponentList">
+              {Object.keys(players).map(uname => {
+                const { typing, progress, readyState } = players[uname];
+                return (
+                  <OpponentCard
+                    key={uname}
+                    name={uname}
+                    typing={typing}
+                    progress={progress}
+                    readyState={readyState}
+                    gameOngoing={gameOngoing}
+                  />
+                );
+              })}
+            </Pane>
           </Pane>
           <Pane display="flex" flexDirection="column">
             <WordListCard
@@ -362,6 +361,24 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
                   sendPlayerReadyState(!readyState);
                 }}
               />
+            )}
+            {showResults && (
+              <Button
+                appearance="primary"
+                height={getCardWidth(1)}
+                width={getCardWidth(6)}
+                marginLeft={8}
+                onClick={restartGame}
+              >
+                <Heading
+                  size={900}
+                  color="white"
+                  textAlign="center"
+                  width="100%"
+                >
+                  Back to Lobby
+                </Heading>
+              </Button>
             )}
             {gameOngoing && (
               <WordTyperCard
@@ -382,19 +399,6 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
           username={username}
           onRestart={restartGame}
         />
-      )}
-      {showResults && (
-        <Button
-          appearance="primary"
-          height={getCardWidth(1)}
-          width={getCardWidth(6)}
-          marginLeft={16}
-          onClick={restartGame}
-        >
-          <Heading size={900} color="white" textAlign="center" width="100%">
-            Back to Lobby
-          </Heading>
-        </Button>
       )}
     </div>
   );

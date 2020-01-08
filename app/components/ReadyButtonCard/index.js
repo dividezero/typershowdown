@@ -12,7 +12,8 @@ const ReadyButtonCard = ({ ready, onClick }) => (
     intent={ready ? 'danger' : 'none'}
     height={getCardWidth(1)}
     width={getCardWidth(6)}
-    marginLeft={16}
+    margin={8}
+    padding={8}
     onClick={onClick}
   >
     <Heading size={900} color="white" textAlign="center" width="100%">
