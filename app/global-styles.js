@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #app {
-    background-color: #333333;
+    background-image: linear-gradient(100deg, #29323c 0%, #485563 100%);
     min-height: 100%;
     min-width: 100%;
   }

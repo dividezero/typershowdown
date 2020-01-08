@@ -21,7 +21,13 @@ import { getCardWidth } from '../../theme/layout';
 import './TyperShowdownPage.css';
 const randomWordCount = 20;
 
-export default function TyperShowdownPage({ sock, channelId, username, host }) {
+export default function TyperShowdownPage({
+  sock,
+  channelId,
+  username,
+  host,
+  onQuit,
+}) {
   const [showResults, setShowResults] = useState(false);
   const [phase, setPhase] = useState('Get ready');
   const [showReadyButton, setShowReadyButton] = useState(true);
@@ -306,7 +312,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
   };
 
   const restartGame = () => {
-    window.location.reload();
+    onQuit();
   };
 
   const allPlayersAreReady = () => {
@@ -323,7 +329,7 @@ export default function TyperShowdownPage({ sock, channelId, username, host }) {
       <Pane
         display="flex"
         flexDirection="column"
-        jusifyItems="center"
+        justifyItems="center"
         alignItems="center"
       >
         <Pane className="container">
@@ -413,7 +419,10 @@ TyperShowdownPage.propTypes = {
   sock: PropTypes.shape({}).isRequired,
   channelId: PropTypes.string.isRequired,
   host: PropTypes.bool.isRequired,
+  onQuit: PropTypes.func,
 };
 
 // What properties the component should have when nothing is defined
-TyperShowdownPage.defaultProps = {};
+TyperShowdownPage.defaultProps = {
+  onQuit: () => {},
+};

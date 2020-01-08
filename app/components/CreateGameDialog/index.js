@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog, Text, TextInputField, SegmentedControl } from 'evergreen-ui';
+import { Dialog, Text, SegmentedControl } from 'evergreen-ui';
 
 import './CreateGameDialog.css';
 
@@ -11,7 +11,6 @@ const CreateGameDialog = ({
   onConfirm,
   onCancel,
 }) => {
-  const [username, setUsername] = useState('');
   const [maxPlayers, setMaxPlayers] = useState(maxPlayersOption);
 
   const getMaxPlayersList = maxNum => {
@@ -29,17 +28,10 @@ const CreateGameDialog = ({
       shouldCloseOnOverlayClick={false}
       width={400}
       onConfirm={() => {
-        onConfirm(username, maxPlayers);
+        onConfirm(maxPlayers);
       }}
       onCancel={onCancel}
     >
-      <TextInputField
-        label="Host Username"
-        required
-        description="What would you like your username to be?"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-      />
       <div>
         <Text>Player Max</Text>
       </div>

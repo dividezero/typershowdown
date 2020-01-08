@@ -22,7 +22,7 @@ const GameListCard = ({ gameList, onSelect }) => {
           <Table.TextHeaderCell>Host</Table.TextHeaderCell>
           <Table.TextHeaderCell textAlign="right">Players</Table.TextHeaderCell>
         </Table.Head>
-        <Table.VirtualBody height={240} {...scroll}>
+        <Table.VirtualBody height={328} {...scroll}>
           {gameList &&
             gameList.map(({ channelId, players, host, maxPlayers }) => (
               <Table.Row

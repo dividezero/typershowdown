@@ -116,20 +116,20 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'React Boilerplate',
-      short_name: 'React BP',
-      description: 'My React Boilerplate-based project!',
+      name: 'Typer Showdown!',
+      short_name: 'TyperShowdown',
+      description: 'May your fingers be quick and your spelling correct!',
       background_color: '#fafafa',
       theme_color: '#b1624d',
       inject: true,
       ios: true,
       icons: [
         {
-          src: path.resolve('app/images/icon-512x512.png'),
-          sizes: [72, 96, 128, 144, 192, 384, 512],
+          src: path.resolve('app/images/icon-144x144.png'),
+          sizes: [72, 96, 128, 144],
         },
         {
-          src: path.resolve('app/images/icon-512x512.png'),
+          src: path.resolve('app/images/icon-144x144.png'),
           sizes: [120, 152, 167, 180],
           ios: true,
         },
